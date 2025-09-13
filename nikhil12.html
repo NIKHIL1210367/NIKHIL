@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MALLA REDDY VISWAVIDAYAPEETH CAMPUS ASSISTANT</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; margin: 0; background:#f4f7fb; color:#222; }
+    .app { max-width:600px; margin:20px auto; background:#fff; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow:hidden; }
+    header { padding:18px; background:linear-gradient(90deg,#1e88e5,#42a5f5); color:white; text-align:center; }
+    header h1 { margin:0 0 6px; font-size:22px; }
+    header p { margin:0; font-size:13px; }
+    main { padding:16px; display:flex; flex-direction:column; height:70vh; }
+    .messages { flex:1; overflow:auto; margin-bottom:8px; }
+    .msg { margin:8px 0; max-width:80%; padding:10px 12px; border-radius:10px; }
+    .msg.user { background:#e6f0ff; align-self:flex-end; }
+    .msg.bot { background:#f0f0f0; align-self:flex-start; }
+    form { display:flex; gap:8px; }
+    input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid #ddd; }
+    button { padding:10px 14px; border-radius:8px; border:none; background:#1e88e5; color:white; cursor:pointer; }
+    button:active { transform:translateY(1px); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>MALLA REDDY VISWAVIDAYAPEETH CAMPUS ASSISTANT</h1>
+      <p>Ask about schedules, dining, library services, and admin procedures</p>
+    </header>
+    <main>
+      <div class="messages" id="messages"></div>
+      <form id="form" autocomplete="off">
+        <input id="input" placeholder="Type your question (e.g., 'library hours')" />
+        <button type="submit">Send</button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+
+    // Very simple Q&A database:
+    const knowledgeBase = [
+      { keywords: ['schedule','timetable','class'], answer: 'Classes run MONDAY–FRIDAY. CS101: 9:00-10:30 in PYTHON.' },
+      { keywords: ['schedule','timetable','class'], answer: 'Classes run WEDNESDAY–.FRIDAY CS101: 9:00-10:30 in HTML.' },
+
+      { keywords: ['dining','canteen','food'], answer: 'Main Canteen open 08:00–20:00. Today special: Paneer Wrap & Veg Biryani.' },
+      { keywords: ['library','books'], answer: 'Library open 08:00–22:00. Borrow up to 6 books.' },
+      { keywords: ['admin','exam','procedure','forms'], answer: 'Exam forms available at Admin Office or online at /forms.' },
+      { keywords: ['hi','hello'], answer: 'Hello! I am your Campus Assistant.' }
+    ];
+
+    function appendMessage(text, who) {
+      const d = document.createElement('div');
+      d.className = 'msg ' + (who === 'user' ? 'user' : 'bot');
+      d.innerText = text;
+      messagesEl.appendChild(d);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      appendMessage(text, 'user');
+      input.value = '';
+
+      // find a match in knowledgeBase:
+      const lower = text.toLowerCase();
+      let answer = "Sorry, I couldn't find specific info. Try: 'library hours', 'canteen hours', or 'class schedule'.";
+      for (const item of knowledgeBase) {
+        if (item.keywords.some(k => lower.includes(k))) {
+          answer = item.answer;
+          break;
+        }
+      }
+      setTimeout(() => appendMessage(answer, 'bot'), 300);
+    });
+  </script>
+</body>
+</html>
+</body>
+</html>
